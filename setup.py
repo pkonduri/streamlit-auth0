@@ -1,8 +1,8 @@
 import setuptools
 
 setuptools.setup(
-    name="streamlit-auth0-component",
-    version="0.1.5",
+    name="streamlit-auth0-component-patch",
+    version="0.2.1",
     author="",
     author_email="",
     description="",
