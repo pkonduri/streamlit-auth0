@@ -5,7 +5,7 @@
 ![Example of Streamlit-Auth0|635x380](demo.gif?raw=true)
 
 ## Installation
-`pip install streamlit-auth0-component`
+`pip install pip install streamlit-auth0-component-patch`
 
 ## Setup
 
@@ -16,7 +16,7 @@
 - Follow example below
 
 ## An example
-On Auth0 website start a "Single Page Web Application" and copy your client-id / domain (of form xxxx.us.auth0.com) into code below.
+On Auth0 website start a "Single Page Web Application" and copy your client-id / domain (of form xxxx.xx.auth0.com) into code below.
 
 ```
 from auth0_component import login_button
