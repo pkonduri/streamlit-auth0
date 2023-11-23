@@ -1,8 +1,13 @@
 import os
 import streamlit.components.v1 as components
+import json
+from six.moves.urllib.request import urlopen
+from functools import wraps
+from jose import jwt
+
 
 _RELEASE = False
-_RELEASE = True
+# _RELEASE = True
 
 
 if not _RELEASE:
@@ -15,11 +20,6 @@ else:
   build_dir = os.path.join(parent_dir, "frontend/dist")
   _login_button = components.declare_component("login_button", path=build_dir)
 
-
-import json
-from six.moves.urllib.request import urlopen
-from functools import wraps
-from jose import jwt
 
 def getVerifiedSubFromToken(token, domain):
     domain = "https://"+domain
@@ -57,7 +57,7 @@ def getVerifiedSubFromToken(token, domain):
 
         return payload['sub']
 
-def login_button(clientId, domain,key=None, **kwargs):
+def login_button(clientId, domain, button_text="Login", key=None, **kwargs):
     """Create a new instance of "login_button".
     Parameters
     ----------
@@ -76,7 +76,7 @@ def login_button(clientId, domain,key=None, **kwargs):
         User info
     """
 
-    user_info = _login_button(client_id=clientId, domain = domain, key=key, default=0)
+    user_info = _login_button(client_id=clientId, domain = domain, button_text=button_text, key=key, default=0)
     if not user_info:
         return False
     elif isAuth(response = user_info, domain = domain):
@@ -88,18 +88,18 @@ def login_button(clientId, domain,key=None, **kwargs):
 def isAuth(response, domain):
     return getVerifiedSubFromToken(token = response['token'], domain=domain) == response['sub']
 
-if not _RELEASE:
-    import streamlit as st
-    from dotenv import load_dotenv
-    import os
-    load_dotenv()
+# if not _RELEASE:
+#     import streamlit as st
+#     from dotenv import load_dotenv
+#     import os
+#     load_dotenv()
 
-    clientId = os.environ['clientId']
-    domain = os.environ['domain']
-    st.subheader("Login component")
-    user_info = login_button(clientId, domain = domain)
-    # user_info = login_button(clientId = "...", domain = "...")
-    st.write('User info')
-    st.write(user_info)
-    if st.button('rerun'):
-        st.experimental_rerun()
+#     clientId = os.environ['clientId']
+#     domain = os.environ['domain']
+#     st.subheader("Login component")
+#     user_info = login_button(clientId, domain = domain)
+#     # user_info = login_button(clientId = "...", domain = "...")
+#     st.write('User info')
+#     st.write(user_info)
+#     if st.button('rerun'):
+#         st.experimental_rerun()

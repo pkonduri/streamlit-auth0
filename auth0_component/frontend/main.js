@@ -8,6 +8,9 @@ const div = document.body.appendChild(document.createElement("div"))
 const button = div.appendChild(document.createElement("button"))
 button.className = "log"
 button.textContent = "Login"
+let isLoggedIn = false; // Track login status
+let desiredButtonText = "Login"; // Default text
+
 
 // set flex collumn so the error message appears under the button
 div.style = "display: flex; flex-direction: column; color: rgb(104, 85, 224); font-weight: 600; margin: 0; padding: 10px"
@@ -18,10 +21,21 @@ let client_id
 let domain
 let auth0
 
+function updateButtonText() {
+  if (isLoggedIn) {
+    button.textContent = "Logout"; // Text to display when logged in
+  } else {
+    button.textContent = desiredButtonText; // Text from Python or default
+  }
+}
+
 const logout = async () => {
   auth0.logout({returnTo: getOriginUrl()})
   Streamlit.setComponentValue(false)
-  button.textContent = "Login"
+  // button.textContent = "Login"
+  // Update login status and button text
+  isLoggedIn = false; // Update login status
+  updateButtonText(); // Update button text
   button.removeEventListener('click', logout)
   button.addEventListener('click', login)
 }
@@ -82,7 +96,12 @@ const login = async () => {
     userCopy.token = token
     console.log(userCopy);
     Streamlit.setComponentValue(userCopy)
-    button.textContent = "Logout"
+    // button.textContent = "Logout"
+
+    // Update login status and button text
+    isLoggedIn = true; // Update login status
+    updateButtonText(); // Update button text
+
     button.removeEventListener('click', login)
     button.addEventListener('click', logout)
 }
@@ -92,12 +111,18 @@ button.addEventListener('click', login);
 //button.onclick = login
 
 function onRender(event) {
-  const data = event.detail
+  const data = event.detail;
   
-  client_id = data.args["client_id"]
-  domain = data.args["domain"]
+  client_id = data.args["client_id"];
+  domain = data.args["domain"];
   
-  Streamlit.setFrameHeight()
+  // Update desiredButtonText but don't directly change the button text here
+  desiredButtonText = data.args["button_text"] || "Login";
+
+  // Let updateButtonText handle setting the button text
+  updateButtonText();
+
+  Streamlit.setFrameHeight();
 }
 
 
@@ -116,3 +141,6 @@ const getOriginUrl = () => {
     return window.location.origin
   }
 }
+
+// Initial call to set the correct button text based on the current state
+updateButtonText();
