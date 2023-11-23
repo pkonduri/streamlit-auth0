@@ -1,0 +1,5 @@
+{
+    "scripts": {
+    "build": "cd auth0_component/frontend && npm install && npm run build"
+  }
+}
