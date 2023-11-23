@@ -1,5 +1,14 @@
 {
+    "name": "streamlit-auth0",
+    "version": "0.0.0",
+    "description": "Root configuration for Heroku build",
     "scripts": {
-    "build": "cd auth0_component/frontend && npm install && npm run build"
+      "build": "cd auth0_component/frontend && npm install && npm run build"
+    },
+    "engines": {
+        "node": "18.x"
+      },      
+    "dependencies": {},
+    "devDependencies": {}
   }
-}
+  
