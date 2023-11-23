@@ -6,8 +6,8 @@ from functools import wraps
 from jose import jwt
 
 
-_RELEASE = False
-# _RELEASE = True
+# _RELEASE = False
+_RELEASE = True
 
 
 if not _RELEASE:
